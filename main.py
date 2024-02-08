@@ -28,14 +28,14 @@ def message_for_resended(text):
     return False
 
 
-@app.on_message(filters.command(['set_forward_chat']))
+@app.on_message(filters.command(['set_forward_chat']) & filters.me)
 async def forward_chat_handler(client, message):
     db.set('chat_id_for_forward', message.chat.id)
     db.set('excluded_chats', [message.chat.id])
     await message.reply_text('В этот чат теперь будут пересылаться сообщения')
 
 
-@app.on_message(filters.command(['add_words']))
+@app.on_message(filters.command(['add_words']) & filters.me)
 async def add_word_handler(client, message):
     args = (message.text or message.caption or "").split()
     if len(args) <= 1:
@@ -50,7 +50,7 @@ async def add_word_handler(client, message):
     await message.reply_text('Слово добавлено!')
 
 
-@app.on_message(filters.command(['delete_words']))
+@app.on_message(filters.command(['delete_words']) & filters.me)
 async def delete_word(client, message):
     args = (message.text or message.caption or "").split()
     if len(args) <= 1:
@@ -70,7 +70,7 @@ async def delete_word(client, message):
     await message.reply_text('Слова удалены!')
 
 
-@app.on_message(filters.command(['words']))
+@app.on_message(filters.command(['words']) & filters.me)
 async def words_handler(client, message):
     await message.reply_text('Слова для поиска:\n' + '\n'.join(db.get('search_words', [])))
 
