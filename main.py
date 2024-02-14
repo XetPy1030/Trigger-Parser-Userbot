@@ -17,8 +17,8 @@ def message_for_resended(text):
         for search_word in db.get('search_words', []):
             ratio = SequenceMatcher(
                 None,
-                word,
-                search_word
+                word.lower(),
+                search_word.lower()
             ).ratio()
             searched.append(ratio)
 
